@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Code Player</title>
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="jquery-ui/jquery-ui.js"></script>
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
+
+    <style>
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    
+        #panels {
+            background: grey;
+            width: 100%;
+            text-align: center;
+            padding-top: 2px;
+            padding-bottom: 1px;
+        }
+
+        #panels .button {
+            font-size: 30px;
+            cursor: pointer;
+            border-right: 3px solid black;
+            border-bottom-right-radius: 4px;
+            padding: 0 10px;
+        }
+
+        #panelFirstChild {
+            border-left: 1px solid black;
+            border-top-left-radius: 5px;
+        }
+
+        #panels a {
+            background-color: #ebf3fe;
+            margin-left: -4px;
+        }
+
+        #panels .active {
+            background-color: hsla(200, 100%, 50%, 1);
+        }
+
+        .html-textarea {
+            width: 100%;
+            height: 100%;
+        }
+
+        .label {
+            width: 50%;
+        }
+
+        #otherSections {
+            border-left: 2px solid black;
+        }
+
+        #main {
+            width: 100%;
+        }
+
+        .main-section {
+            height: 100vh;
+            float: left;
+        }
+
+        textarea {
+            box-sizing: border-box;
+            resize: none;
+            border-right: none;
+        }
+
+        iframe {
+            /* margin-left: 6px; better to use box-size: border-box instead of hacks*/
+            box-sizing: border-box;
+            border: 1px solid black;
+        }
+
+        #outputPanel {
+            position: relative;
+            height: 100%;
+            width: 100%; 
+        }
+
+        div[name="HTML"],
+        div[name="Output"] {
+            width: 50%;
+        }
+
+        /* #main textarea {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main .ui-wrapper {
+            padding: 0!important;
+        } */
+
+    </style>
+</head>
+
+<body>
+    <div id="panels">
+        <a class="button active" id="panelFirstChild" href="#" name="HTML">HTML</a>
+        <a class="button" href="#" name="CSS">CSS</a>
+        <a class="button" href="#" name="JavaScript">JavaScript</a>
+        <a class="button active" href="#" name="Output">Output</a>
+    </div>
+
+    <div id="main">
+        <div id="HTML" class="main-section first-section" style="width: 50%">
+            <div class="label">HTML</div>
+            <textarea type="text" class="html-textarea">blah blah blah</textarea>
+        </div>
+
+        <div style="display: none" id="CSS" class="main-section otherSections">
+            <div class="label">CSS</div>
+            <textarea type="text" class="html-textarea"></textarea>
+        </div>
+
+        <div style="display: none" id="JavaScript" class="main-section otherSections">
+            <div class="label">JavaScript</div>
+            <textarea id="js" type="text" class="html-textarea">document.write("sdfd");</textarea>
+        </div>
+
+        <div id="Output" class="main-section otherSections" style="width: 50%">
+            <div class="label">Output</div>
+
+            <!-- This iframe is too big compared to other divs -->
+
+            <iframe id="outputPanel"class="html-textarea" scrolling="no" frameborder="0"></iframe>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        
+        var activePanels = ($("#panels .active")).length;
+
+        // resize
+        $(".resizable").resizable({
+            handles: "e",
+            minWidth: 20,
+            maxWidth: 700,
+            resize: function() {
+                // To Complete
+            }
+        });
+
+        // parsing HTML to output
+        $("#HTML textarea, #CSS textarea").on("chane keyup paste", function() {
+            $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#CSS textarea").val() + "</style></head><body>" + $("#main .first-section textarea").val() + "</body></html>");
+        });
+
+        document.getElementById("outputPanel").contentWindow.eval($("#js").val());
+
+        // after each click, change width depending on activePanels
+        $( document ).ready(function() {
+            $(".button").click(callback)
+        });
+
+        // call backs
+
+        function callback() {
+
+            var divToToggle;
+            var toModifyWidth;
+            // alert($(this).attr("name"));
+            var wasActive;
+            if($(this).hasClass("active")) {
+                wasActive = true;
+                $(this).removeClass("active");
+            } else {
+                wasActive = false;
+                $(this).addClass("active");
+            }
+            activePanels = ($("#panels .active")).length;
+
+            toMod = $(".active");
+
+            if(wasActive) {
+                switch(activePanels) {
+                    case 0: 
+                        // activePanels -= 1; taken care of above
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).hide();
+                        break;
+                    case 1:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).hide();
+                        break;
+                    case 2:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).hide();
+                        break;
+                    case 3:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).hide();
+                        break;
+                }
+                // if we're activating a button. Can't be zero
+            } else {
+                switch(activePanels) {
+                    case 1:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).show();
+                        break;
+                    case 2:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).show();
+                        break;
+                        // apply resizable to right of divToggle
+                    case 3:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).show();
+                        break;
+                    case 4:
+                        divToToggle = $(this).attr("name");
+                        $("#" + divToToggle).show();
+                        break;
+                }
+            }
+
+            // HANDLING WIDTHS
+            toMod = $(".active");
+            switch(activePanels) {
+                case 0:
+                    break;
+                case 1:
+                    $("#" + toMod[0].innerText).css("width", "100%");
+                    break;
+                case 2:
+                    var newWidth = (100/activePanels);
+
+                    for(let i = 0; i < 2; i++) {
+                        $("#" + toMod[i].innerText).css("width", newWidth + "%");
+                    }
+                    break;
+                case 3:
+                    var newWidth = (100/activePanels);
+
+                    for(let i = 0; i < 3; i++) {
+                        $("#" + toMod[i].innerText).css("width", newWidth + "%");
+                    }
+                    break;
+                case 4:
+                    toModifyWidth = $(".active");
+                    var newWidth = (100/activePanels);
+
+                    for(let i = 0; i < 4; i++) {
+                        $("#" + toMod[i].innerText).css("width", newWidth + "%");
+                    }
+                    break;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
