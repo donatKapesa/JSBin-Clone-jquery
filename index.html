@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <title>Code Player</title>
 
-<!--     <script type="text/javascript" src="jquery.min.js"></script>
-    <script src="jquery-ui/jquery-ui.js"></script>
-    <link href="jquery-ui/jquery-ui.css" rel="stylesheet"> -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- JQuery UI -->
@@ -158,11 +154,11 @@
         });
 
         // parsing HTML to output
-        $("#HTML textarea, #CSS textarea").on("chane keyup paste", function() {
+        $("textarea").on("chane keyup paste", function() {
             $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#CSS textarea").val() + "</style></head><body>" + $("#main .first-section textarea").val() + "</body></html>");
-        });
 
-        document.getElementById("outputPanel").contentWindow.eval($("#js").val());
+            document.getElementById("outputPanel").contentWindow.eval($("#js").val());
+        });
 
         // after each click, change width depending on activePanels
         $( document ).ready(function() {
